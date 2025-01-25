@@ -2,6 +2,7 @@ import requests, re
 from bs4 import BeautifulSoup
 from enum import Enum
 
+
 class GOODWEARMALL(Enum) :
     DICOUNT = "dcRt"
     ORIGIN_PRICE = "cvrPrc"
@@ -13,6 +14,7 @@ class PriceCollector() :
         self._origin_price = 0
         self._sale_price = 0
         self._discount = 0
+        
 
     @property
     def origin_price(self):
@@ -46,7 +48,7 @@ class PriceCollector() :
                 self._origin_price = int(float(origin_price[0]["value"])) if self.check_string_is_float(origin_price[0]["value"]) else int(origin_price[0]["value"])
                 self._sale_price = int(float(sale_price[0]["value"])) if self.check_string_is_float(sale_price[0]["value"]) else int(sale_price[0]["value"])
                 self._discount = int(float(discount[0]["value"])) if self.check_string_is_float(discount[0]["value"]) else int(discount[0]["value"])
-                
+        
         return {
             "discount" : self.discount,
             "sale_price" : self.sale_price,
@@ -71,5 +73,3 @@ class PriceCollector() :
             return False
         else :
             return True
-    
-    
