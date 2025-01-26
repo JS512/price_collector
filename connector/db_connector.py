@@ -38,6 +38,16 @@ class DBConnector() :
         
         return self.cursor.fetchall()
     
+    def get_user_use_url(self, id) :
+        self.cursor.execute(
+            """SELECT user.user_id FROM user
+            JOIN user_url ON (user.user_id = user_url.user_id)
+            JOIN url ON (user_url.url_id = url.id and url.id=?)
+            """, 
+            (id,))
+        
+        return self.cursor.fetchall()
+    
     def save_price_data(self, data:list[tuple]) :
         
         try :
