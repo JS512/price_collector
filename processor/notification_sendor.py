@@ -17,10 +17,10 @@ class EmailSendor :
         message = MIMEText(message)
         message['Subject'] = title
         message['From'] = self.sender_email
-        message['To'] = send_to
+        message['To'] = ', '.join(send_to)
 
         # 이메일 전송
         with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
-            server.starttls()
+            server.starttls()            
             server.login(self.sender_email, self.sender_password)
             server.sendmail(self.sender_email, send_to, message.as_string())        
