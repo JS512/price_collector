@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-setting_info = json.load(open(BASE_DIR.parent.__str__()+"/secrets/account.json"))
+setting_info = json.load(open(BASE_DIR.parent.__str__()+"/secrets/account.json", encoding='utf-8'))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = setting_info["django_secret_key"]
 
@@ -83,11 +83,11 @@ WSGI_APPLICATION = 'priceCollect.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # mysqlclient librarly 설치
-        'NAME': setting_info['NAME'],
-        'USER': setting_info['USER'],
-        'PASSWORD': setting_info['PASSWORD'], # mariaDB 설치 시 입력한 root 비밀번호 입력
-        'HOST': setting_info['HOST'],
-        'PORT': setting_info['PORT']
+        'NAME': setting_info['db']["NAME"],
+        'USER': setting_info['db']["USER"],
+        'PASSWORD': setting_info['db']["PASSWORD"], # mariaDB 설치 시 입력한 root 비밀번호 입력
+        'HOST': setting_info['db']["HOST"],
+        'PORT': setting_info['db']["PORT"]
     }
 }
 
