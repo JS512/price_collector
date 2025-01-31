@@ -27,12 +27,15 @@ SECRET_KEY = setting_info["django_secret_key"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*", "http://127.0.0.1:8000", "http://127.0.0.1:5055/login"]
 TIME_ZONE = 'Asia/Seoul'
 
 USE_TZ = True
 
 # Application definition
+import mimetypes
+mimetypes.add_type("application/javascript", ".js", True)
+# mimetypes.add_type("application/json", ".json", True)
 
 INSTALLED_APPS = [
     'price.apps.PriceConfig',
@@ -42,11 +45,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders'
 ]
 
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'priceCollect.urls'

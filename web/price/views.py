@@ -15,3 +15,6 @@ class UrlListView(View):  # View를 상속받는다.
             links.append(user_url.url.url_link)
         
         return render(request, "price/index.html", {"links" : links})
+    
+    
+

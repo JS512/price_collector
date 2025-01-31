@@ -12,11 +12,18 @@ class DBConnector() :
             database = db
         )
         self.cursor = self.conn.cursor(dictionary=True)
-        
+    
     def get_user_data(self, id) :
         self.cursor.execute(
             "SELECT user_id, user_pw FROM user WHERE user_id = ?", 
             (id,))
+        
+        return self.cursor.fetchall()
+    
+    def get_user_data_with_pw(self, id, pw) :
+        self.cursor.execute(
+            "SELECT user_id, user_pw FROM user WHERE user_id = ? and user_pw = ?", 
+            (id, pw,))
         
         return self.cursor.fetchall()
     
