@@ -3,8 +3,8 @@ from flask.views import View, MethodView
 from connector import db_connector, redis_connector
 from flask_cors import CORS, cross_origin
 from flask import Response
-import json,jwt, datetime
-import http
+import json
+from utils import jwt_manager
 
 
 app = Flask(__name__)
@@ -12,44 +12,8 @@ app = Flask(__name__)
 db = db_connector.DBConnector()
 CORS(app, origins=["*"], supports_credentials=True)
 
-
-
-SECRET_PRE = "personal_choose"
-
-class CookieManager() :
-    
-    def create_cookie(self, resp, value, name="basic") :
-        resp.set_cookie(name, value = value, max_age = None, expires = None, path = '/', domain = None, 
-                        secure = None, httponly = False)
-class JwtManager() :
-    def __init__(self):
-        self.algorithm = 'HS256'
-        
-    
-    def create_token(self, email):
-        encoded = jwt.encode(
-            payload = {'exp':datetime.datetime.utcnow() + datetime.timedelta(seconds = 300),
-                    'email': email},
-            key = SECRET_PRE, 
-            algorithm = self.algorithm)
-        return encoded
-    
-    
-    def validate_token(self, get_token):
-        try:
-            print(jwt.decode(get_token, SECRET_PRE, algorithms = self.algorithm, options={"verify_signature" : True}))
-        except Exception as e :
-            print(e)
-        except jwt.ExpiredSignatureError:
-            return http.HTTPStatus.UNAUTHORIZED
-        except jwt.InvalidTokenError:
-            return http.HTTPStatus.UNAUTHORIZED
-        else:
-            return True
-        
-        
-jwt_m = JwtManager()
-cookie_m = CookieManager()
+jwt_m = jwt_manager.JwtManager()
+cookie_m = jwt_manager.CookieManager()
 
 class LoginProcessor(MethodView) :
     def __init__(self):
@@ -89,18 +53,6 @@ class LoginProcessor(MethodView) :
     def check_login(self) :
         pass
 
-
-
-    
-# @app.route("/login", methods=["POST"])
-# def dispatch_request():
-#     if request.method == "POST":
-#         params = request.get_json()
-#         user_data = db.get_user_data_with_pw(params["id"], params["pw"]) 
-#         if user_data :
-#             return "Success", 200
-#         else :
-#             return "Authorized Error", 401
 @app.route('/')
 def home():
     return 'Hello, World!'

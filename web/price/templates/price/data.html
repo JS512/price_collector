@@ -1,0 +1,15 @@
+{% extends "price/common.html" %}
+
+{% block title %}My amazing blog{% endblock %}
+
+{% block content %}
+<table>
+    {% for link in links %}
+    <tr>
+        <td>
+            {{link}}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

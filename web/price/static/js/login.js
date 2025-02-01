@@ -8,7 +8,7 @@
 
 var data;
 
-fetch('../static/settings.json')
+fetch('../../static/settings.json')
   .then(response => response.json())
   .then(response => {data = response})
   .catch(error => console.log(error));
@@ -22,7 +22,7 @@ async function login(){
     "id" : id,
     "pw" : pw
   }
-  var res = await fetch(data["login_server"], {
+  var res = await fetch(data["login_server"] + data["login_api"], {
       method: "POST",
       mode : "cors",
       cache : "no-cache",
@@ -36,7 +36,7 @@ async function login(){
   console.log(res)
   var res_data = await res.json()
   if(res.status == 200){
-    // window.location.replace("http://example.com");
+    window.location.replace(data["data_page"]);
   }else{
     console.log(res_data)
   }

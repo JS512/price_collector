@@ -1,0 +1,5 @@
+{
+    "login_server" : "http://127.0.0.1:5055",
+    "login_api" : "/login",
+    "data_page" : "/price/data"
+}

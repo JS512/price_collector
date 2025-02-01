@@ -169,3 +169,18 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+/mariadb/*
+/redis/*
+/secrets/*
+
+
+### Django ###
+/web/*.log
+/web/*.pot
+/web/*.pyc
+/web/__pycache__/
+/web/local_settings.py
+/web/db.sqlite3
+/web/db.sqlite3-journal
+/web/media
