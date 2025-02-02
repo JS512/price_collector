@@ -1,15 +1,21 @@
 {% extends "price/common.html" %}
 
+
+
 {% block title %}My amazing blog{% endblock %}
 
+{% block header %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+{% endblock %}
+
 {% block content %}
-<table>
-    {% for link in links %}
-    <tr>
-        <td>
-            {{link}}
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+<div id="url_list">
+</div>
+
+
+
+
+<script>
+  
+</script>
 {% endblock %}
