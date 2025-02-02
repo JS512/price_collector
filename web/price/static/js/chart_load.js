@@ -25,9 +25,25 @@ async function load_chart_data(){
 }
 
 
+function create_table_input_row(){
+    let table = document.getElementById("url_list").getElementsByTagName("tbody")[0]
+    let new_row = table.insertRow();
+
+    let cell1 = new_row.insertCell(0);
+        let cell2 = new_row.insertCell(1);
+        let cell3 = new_row.insertCell(2);
+
+        // 입력 가능한 칸 생성
+        cell1.innerHTML = '<input type="text" placeholder="이름 입력">';
+        cell2.innerHTML = '<input type="number" placeholder="나이 입력">';
+        cell3.innerHTML = '<input type="text" placeholder="직업 입력">';
+}
+
 function set_table(source){
-    var url_list = document.getElementById("url_list");
+    var url_list = document.getElementById("url_list");    
     var table = document.createElement("table");
+    var table_body = document.createElement("tbody");
+
     var links = source["links"];
     var canvas_ids = [];
 
@@ -52,7 +68,8 @@ function set_table(source){
         table.appendChild(tr);
     }
 
-    url_list.appendChild(table);
+    table_body.appendChild(table);
+    url_list.appendChild(table_body)
 
     for(var i=0; i<canvas_ids.length; i++){
         document.getElementById(canvas_ids[i]).style.width="800px";
@@ -77,7 +94,7 @@ function create_chart_canvas(id, labels, chart_data){
 function set_chart(element, labels, chart_data){
     console.log(labels, chart_data)
     let myChart = new Chart(element, {
-      type: 'bar',
+      type: 'line',
       data: {
         labels: labels,
         datasets: [

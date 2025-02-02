@@ -56,7 +56,7 @@ class UrlListView(View):  # View를 상속받는다.
         
             return render(request, "price/data.html")
         else :
-            return HttpResponseNotFound("NO!!!!!!!! TTTTTTTTTTTTTTT")
+            return render(request, "price/index.html")
         return render(request, "price/index.html")
     
     
