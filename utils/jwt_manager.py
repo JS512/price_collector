@@ -32,5 +32,6 @@ class JwtManager() :
             return False
         
     def get_user_id(self, decoded_token) :
-        
-        return decoded_token["email"]
+        if decoded_token :
+            return decoded_token["email"]
+        return None

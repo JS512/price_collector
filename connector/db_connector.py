@@ -20,12 +20,16 @@ class DBConnector() :
         
         return self.cursor.fetchall()
     
-    def get_user_data_with_pw(self, id, pw) :
+    def get_user_data_with_pw(self, id) :
         self.cursor.execute(
-            "SELECT user_id, user_pw FROM user WHERE user_id = ? and user_pw = ?", 
-            (id, pw,))
+            "SELECT user_id, user_pw FROM user WHERE user_id = ?", 
+            (id,))
         
-        return self.cursor.fetchall()
+        users = self.cursor.fetchall()
+        if len(users) < 1 :
+            return None
+        else :
+            return users[0]['user_pw']
     
     
     def get_all_urls(self) :

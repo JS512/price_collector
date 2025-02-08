@@ -3,7 +3,7 @@ from flask.views import View, MethodView
 from connector import db_connector, redis_connector
 from flask_cors import CORS, cross_origin
 from flask import Response
-import json
+import json, bcrypt
 from utils import jwt_manager
 
 
@@ -17,21 +17,23 @@ cookie_m = jwt_manager.CookieManager()
 
 class LoginProcessor(MethodView) :
     def __init__(self):
-        pass
+        with open("secrets/account.json") as json_file : 
+            json_data = json.load(json_file)
+            self.login_salt = json_data["login"]["salt"]
+            self.login_encode = json_data["login"]["encode"]
+            
     
     
-    def post(self):
-    
+    def post(self):    
         params = request.get_json()
-        user_data = db.get_user_data_with_pw(params["id"], params["pw"]) 
         
+        pw = params["pw"]
+        user_data = db.get_user_data_with_pw(params["id"])         
         
         response = make_response()
         response.mimetype = "application/json"
         
-        
-        # if True :
-        if user_data :
+        if bcrypt.checkpw(pw.encode(self.login_encode), user_data.encode(self.login_encode)) :
             print(params["id"], type(params["id"]))
             token = jwt_m.create_token(params["id"])
             # cookie_m.create_cookie(response, token)
@@ -57,9 +59,6 @@ class LoginProcessor(MethodView) :
 def home():
     return 'Hello, World!'
 
-@app.route('/22')
-def home2() :
-    return "test";
 
 if __name__ == '__main__':
     app.add_url_rule("/login", view_func=LoginProcessor.as_view("login"), methods=["GET", "POST"])
