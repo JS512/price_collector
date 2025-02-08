@@ -30,13 +30,11 @@ function create_table_input_row(){
     let new_row = table.insertRow();
 
     let cell1 = new_row.insertCell(0);
-        let cell2 = new_row.insertCell(1);
-        let cell3 = new_row.insertCell(2);
+    let cell2 = new_row.insertCell(1);
+    let cell3 = new_row.insertCell(2);
 
-        // 입력 가능한 칸 생성
-        cell1.innerHTML = '<input type="text" placeholder="이름 입력">';
-        cell2.innerHTML = '<input type="number" placeholder="나이 입력">';
-        cell3.innerHTML = '<input type="text" placeholder="직업 입력">';
+    // 입력 가능한 칸 생성
+    cell1.innerHTML = '<input type="text" name="url[]" placeholder="URL">';
 }
 
 function set_table(source){
@@ -65,11 +63,11 @@ function set_table(source){
 
         tr.appendChild(url)
         tr.appendChild(chart)
-        table.appendChild(tr);
+        table_body.appendChild(tr);
     }
 
-    table_body.appendChild(table);
-    url_list.appendChild(table_body)
+    table.appendChild(table_body);
+    url_list.appendChild(table)
 
     for(var i=0; i<canvas_ids.length; i++){
         document.getElementById(canvas_ids[i]).style.width="800px";
@@ -105,4 +103,27 @@ function set_chart(element, labels, chart_data){
         ]
       },
     });
+}
+
+
+function save_urls() {
+  const urls = Array.from(document.querySelectorAll('input[name="url[]"]'))
+                       .map(input => input.value)
+                       .filter(value => value);
+  let send_data  = {
+    "urls" : urls
+  }
+  // const header = document.querySelector('meta[name="_csrf_header"]').content;
+  //   const token = document.querySelector('meta[name="_csrf"]').content;
+  const csrfToken = getCsrfTokenFromCookie();
+	fetch(data["save_url"], {
+            method: "POST",
+            headers: {   
+                "header" : "X-CSRFTOKEN",             
+              	'X-Requested-With': 'XMLHttpRequest',
+                "Content-Type": "application/json",
+                'X-CSRFTOKEN': csrfToken	// header에 X-CSRF-Token부분에 토큰값이 들어가 정상적으로 POST값이 넘어가는 것을 볼 수 있다!
+            },
+            body: JSON.stringify(send_data)
+        })
 }

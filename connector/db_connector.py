@@ -74,6 +74,39 @@ class DBConnector() :
             print(e)
             return False
         
+    def save_url_data(self, id, data:list[tuple]) :
+        try :
+            
+            for i in range(math.ceil(len(data)/2500)) :
+                self.cursor.executemany("INSERT INTO  url (url_link)  values (%s) RETURNING *",
+                data[:2500])
+                data = data[2500:]
+                
+                fetched = self.cursor.fetchall()
+                insert_data = [ (id, fetch["id"]) for fetch in fetched]
+                
+            
+                if self.save_user_url_data(insert_data) :
+                    self.conn.commit()
+                
+            return True
+        except Exception as e :
+            print(e)
+            return False
+        
+    def save_user_url_data(self, data:list[tuple]) :
+        try :
+            
+            for i in range(math.ceil(len(data)/2500)) :
+                self.cursor.executemany("INSERT INTO user_url (user_id, url_id)  values (%s, %s)",
+                data[:2500])
+                data = data[2500:]
+            
+            return True
+        except Exception as e :
+            print(e)
+            return False
+        
     def close(self):
         """클래스의 리소스를 정리하는 메서드"""
         if self.cursor:

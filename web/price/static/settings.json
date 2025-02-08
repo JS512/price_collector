@@ -1,6 +1,9 @@
 {
     "login_server" : "http://127.0.0.1:5055",
     "login_api" : "/login",
+
+
     "data_page" : "/price/data",
-    "get_user_chart_data" : "/price/data/user_price"
+    "get_user_chart_data" : "/price/data/user_price",
+    "save_url" : "/price/save_url/"
 }

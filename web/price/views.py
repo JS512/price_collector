@@ -4,10 +4,11 @@ from django.views.generic import View
 from flask import jsonify
 from price.models import *
 from utils import jwt_manager
+from connector import db_connector
 import json
 
 jwt_m = jwt_manager.JwtManager()
-
+db_conn = db_connector.DBConnector()
 
 class LoginView(View) :
     def get(self, request):
@@ -51,9 +52,6 @@ class UrlListView(View):  # View를 상속받는다.
         jwt_token = request.COOKIES.get("basic")
         decoded_jwt = jwt_m.validate_token(jwt_token)
         if decoded_jwt :
-            
-           
-        
             return render(request, "price/data.html")
         else :
             return render(request, "price/index.html")
@@ -63,3 +61,12 @@ class UrlListView(View):  # View를 상속받는다.
     
     
 
+class SaveDataView(View) :
+    def post(self, request) :
+        jwt_rs = jwt_m.validate_token(request.COOKIES.get("basic"))
+        if jwt_rs :
+            urls = json.loads(request.body)['urls']
+            save_data = [(url,) for url in urls]
+            db_conn.save_url_data(jwt_m.get_user_id(jwt_rs), save_data)
+        # else :
+            
