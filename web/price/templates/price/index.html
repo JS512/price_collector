@@ -1,4 +1,6 @@
 
+{% extends "price/common.html" %}
+
     
 
 
@@ -29,18 +31,10 @@
     <div>
         <div>
             <input type="button" value="로그인" onclick="login()">
-            <input type="button" value="test" onclick="test()">
+            <input type="button" value="test" onclick="subscribeToPush()">
         </div>
     </div>
 </div>
 
-{% comment %} <table>
-    {% for link in links %}
-    <tr>
-        <td>
-            {{link}}
-        </td>
-    </tr>
-    {% endfor %}
-</table> {% endcomment %}
+
 {% endblock %}

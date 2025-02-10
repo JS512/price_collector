@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from flask import jsonify
 from price.models import *
+from webpush.models import PushInformation
 from utils import jwt_manager
 from connector import db_connector
 import json
@@ -69,4 +70,44 @@ class SaveDataView(View) :
             save_data = [(url,) for url in urls]
             db_conn.save_url_data(jwt_m.get_user_id(jwt_rs), save_data)
         # else :
-            
+
+import json
+from django.http import JsonResponse
+from webpush import send_user_notification
+from django.contrib.auth.models import User
+
+
+def send_push_notification(request):
+    user = User.objects.get(email="shdzl@naver.com")
+    from webpush import send_user_notification
+
+    payload = {"head": "Welcome!", "body": "Hello World"}
+
+    send_user_notification(user=user, payload=payload, ttl=1000)
+    
+    
+import json
+from django.http import JsonResponse
+
+
+def save_subscription(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        user_id = data.get('user_id')
+        user = User.objects.get(email='shdzl@naver.com')
+        # user = User.objects.create_user(username='222',
+        #                          email='shdzl@naver.com',
+        #                          password='glass onion')
+        # 유저의 Web Push 정보 저장
+        # push_info, created = PushInformation.objects.get_or_create(user=user)
+        # push_info.subscription = data
+        # push_info.save()
+
+        return JsonResponse({"message": "Subscription saved!"}, status=201)
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+
+def save_subscription2(request) :
+    return render(request, "price/test.html")

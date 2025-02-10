@@ -27,7 +27,7 @@ SECRET_KEY = setting_info["django_secret_key"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*", "http://127.0.0.1:8000", "http://127.0.0.1:5055/login"]
+ALLOWED_HOSTS = ["*", "https://127.0.0.1:8000", "http://127.0.0.1:5055/login"]
 TIME_ZONE = 'Asia/Seoul'
 
 USE_TZ = True
@@ -39,13 +39,16 @@ mimetypes.add_type("application/javascript", ".js", True)
 
 INSTALLED_APPS = [
     'price.apps.PriceConfig',
+    "webpush",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders'
+    'corsheaders',
+    "sslserver"
+    
 ]
 
 
@@ -134,12 +137,26 @@ USE_TZ = True
 import os
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'core/static'),
-)
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+WEBPUSH_SETTINGS = {
+    "VAPID_PUBLIC_KEY": "BC_zskEiHCNIHG4NZa95iUPqu7-qWhpVNX0mAk4YZa3eeVepk17_3NgBi5wQnbh9m96iPCfwmA2OA4AYWdHW0l0",
+    "VAPID_PRIVATE_KEY": "F6rsU8M9Rg44JDWTpO8uUV9MI9-9_NfenFQNqni0vfw",
+    "VAPID_ADMIN_EMAIL": "your@email.com",
+}
+
+# from django_jinja.builtins import DEFAULT_EXTENSIONS
+
+# TEMPLATES = [
+#     {
+#         "BACKEND": "django_jinja.backend.Jinja2",
+#         "OPTIONS": {
+#             "extensions": DEFAULT_EXTENSIONS + [
+#                 "webpush.jinja2.WebPushExtension"
+#             ]
+#         }
+#     }
+# ]
