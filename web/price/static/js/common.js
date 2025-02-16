@@ -22,12 +22,13 @@ function getCsrfTokenFromCookie() {
 }
 
 
-async function setCookieStore(value) {
-    console.log("stored value" , value)
+async function setCookieStore(value) {    
     await cookieStore.set({
         name : "csrftoken",
         value : value
     })
 }
 
-setCookieStore(getCsrfTokenFromCookie());
+cookieStore.addEventListener("change", async (event) => {
+    await setCookieStore(getCsrfTokenFromCookie());
+});
