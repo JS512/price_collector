@@ -1,16 +1,6 @@
 var data;
 
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/static/js/service-worker.js')
-        .then(registration => {
-          console.log('Service Worker registered with scope:', registration.scope);
-        })
-        .catch(error => {
-          console.error('Service Worker registration failed:', error);
-        });
-    });
-  }
+
 
 function load_setting_data(){
     return fetch('../../static/settings.json')
@@ -30,3 +20,14 @@ function getCsrfTokenFromCookie() {
     }
     return null;  // CSRF 토큰이 없을 경우 null 반환
 }
+
+
+async function setCookieStore(value) {
+    console.log("stored value" , value)
+    await cookieStore.set({
+        name : "csrftoken",
+        value : value
+    })
+}
+
+setCookieStore(getCsrfTokenFromCookie());

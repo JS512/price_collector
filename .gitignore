@@ -180,7 +180,7 @@ cython_debug/
 /web/*.pot
 /web/*.pyc
 /web/__pycache__/
-/web/local_settings.py
+/web/**/settings.py
 /web/db.sqlite3
 /web/db.sqlite3-journal
 /web/media

@@ -9,4 +9,5 @@ urlpatterns = [
     path("send_push/", views.send_push_notification, name="send_push"),
     path("save_subscription/", views.save_subscription, name="save_subscription"),
     path("test/", views.save_subscription2, name="save_subscription2"),
+    path("get-csrf-token/", views.xxx, name="get-csrf-token")
 ]

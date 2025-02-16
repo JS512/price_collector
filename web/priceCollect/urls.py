@@ -20,6 +20,6 @@ from django.urls import path, include
 urlpatterns = [
     path('price/', include("price.urls")),
     path('admin/', admin.site.urls),
-    path(r'^webpush/', include('webpush.urls'))
-
+    path('webpush/', include('webpush.urls')),
+    path('', include('pwa.urls'))
 ]

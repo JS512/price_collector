@@ -7,6 +7,7 @@ from webpush.models import PushInformation
 from utils import jwt_manager
 from connector import db_connector
 import json
+from webpush import send_user_notification
 
 jwt_m = jwt_manager.JwtManager()
 db_conn = db_connector.DBConnector()
@@ -73,35 +74,29 @@ class SaveDataView(View) :
 
 import json
 from django.http import JsonResponse
-from webpush import send_user_notification
+from webpush.utils import send_to_subscription
 from django.contrib.auth.models import User
+from webpush.models import SubscriptionInfo
 
 
 def send_push_notification(request):
-    user = User.objects.get(email="shdzl@naver.com")
-    from webpush import send_user_notification
-
     payload = {"head": "Welcome!", "body": "Hello World"}
+    ss = SubscriptionInfo.objects.get(id=1)
+    data = send_to_subscription(ss, json.dumps(payload), ttl=1000)
 
-    send_user_notification(user=user, payload=payload, ttl=1000)
+    
+    return JsonResponse({"message": "Subscription saved!"}, status=201)
     
     
 import json
 from django.http import JsonResponse
 
-
+data = []
 def save_subscription(request):
+    # User.objects.create(username="XXXX", email="test@test.com", password="test")
     if request.method == "POST":
-        data = json.loads(request.body)
-        user_id = data.get('user_id')
-        user = User.objects.get(email='shdzl@naver.com')
-        # user = User.objects.create_user(username='222',
-        #                          email='shdzl@naver.com',
-        #                          password='glass onion')
-        # 유저의 Web Push 정보 저장
-        # push_info, created = PushInformation.objects.get_or_create(user=user)
-        # push_info.subscription = data
-        # push_info.save()
+        data.append(request.body)
+        print(request.body)
 
         return JsonResponse({"message": "Subscription saved!"}, status=201)
 
@@ -111,3 +106,16 @@ def save_subscription(request):
 
 def save_subscription2(request) :
     return render(request, "price/test.html")
+
+from django.middleware.csrf import get_token
+def xxx(request) :
+    token = get_token(request)
+    response = JsonResponse({"token": token})
+    response.set_cookie("csrftoken", token, httponly=True, samesite="Strict")
+    return response
+
+
+def send_to(request) :
+    payload = {"head": "Welcome!", "body": "Hello World"}
+    user = User.objects.get(id=1)
+    send_user_notification(user=user, payload=payload, ttl=1000)
