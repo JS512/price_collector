@@ -1,10 +1,13 @@
 
 {% extends "price/common.html" %}
+
+
 {% block content %}
         <button id="notify">Notify me!</button>
 <section id="demo-logs"></section>
+        <button onclick="send_tt()">xxx</button>
+# For django templating engine
 
-        
         <script>
             
             const demoLogs = document.querySelector("#demo-logs");
@@ -63,5 +66,35 @@ window.addEventListener("load", () => {
   });
 });
 
+const registerSW = () => {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/static/js/service-worker.js')
+        .then(registration => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(error => {
+          console.error('Service Worker registration failed:', error);
+        });
+    });
+  }
+}
+
+registerSW();
+
+
+function send_tt(){
+  
+
+  fetch("/price/send_push/", {
+    method: "GET",
+    headers: {   
+        "header" : "X-CSRFTOKEN",             
+        'X-Requested-With': 'XMLHttpRequest',
+        "Content-Type": "application/json",
+        'X-CSRFTOKEN': getCsrfTokenFromCookie()	// header에 X-CSRF-Token부분에 토큰값이 들어가 정상적으로 POST값이 넘어가는 것을 볼 수 있다!
+    }    
+})
+}
         </script>
     {% endblock %}
