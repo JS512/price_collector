@@ -47,8 +47,10 @@ const urlBase64ToUint8Array = base64String => {
 
 const saveSubscription = async (subscription) => {
 
-    console.log(cookieStore)
-    const response = await getCSRFToken().then(token => {        
+    var a = await cookieStore.get('csrftoken');
+    console.log(a);
+    const response = await cookieStore.get('csrftoken').then(values => {        
+        var token = values.value;
         return fetch('http://127.0.0.1:8000/price/save_subscription/', {
             method : "post",
             headers : {"header" : "X-CSRFTOKEN",             
